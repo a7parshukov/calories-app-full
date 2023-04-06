@@ -1,9 +1,12 @@
 import { Router } from "express";
 import User from "../scheme/User.js";
+import config from "config";
 // для шифрования пароля
 import bcrypt from "bcrypt";
 // для валидации на стороне сервера https://www.npmjs.com/package/express-validator
 import { body, validationResult } from "express-validator";
+// JSON WEB TOKEN:
+import jwt from "jsonwebtoken";
 
 const router = Router();
 
@@ -71,7 +74,7 @@ router.post(
       // получить email и пароль из body:
       const { email, password } = req.body
 
-      // !!! ВНИМАНИЕ! Понять, почему он читает ya.ru как yandex.ru (видно, если консолировать данные:)
+      // !!! ВНИМАНИЕ! Понять, почему он читает ya.ru как yandex.ru (видно, если консолировать данные:
 			// console.log(email, password)
 			// соответственно, можно зарегистрировать два аккаунта ya.ru и yandex.ru, а req присылает только yandex.ru
 
@@ -87,8 +90,16 @@ router.post(
         return res.status(400).json({ message: "Неверный пользователь или пароль" })
       }
 
+      // для повышения надежности при общении между пользователем и сервером используется JSON WEB TOKEN:
+      // https://www.npmjs.com/package/jsonwebtoken 
+      const webToken = jwt.sign(
+        {userID: isUser._id}, 
+        config.get("privateKey"),
+        {expiresIn: "1h"}
+        )
+
       // успех
-      res.status(200).json({ message: "login ok" })
+      res.status(200).json({ token: webToken, userID: isUser._id })
     } catch (error) {
       res.status(500).json({ message: "Что-то пошло не так" })
     }

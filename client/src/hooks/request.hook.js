@@ -23,9 +23,11 @@ function useRequest() {
     }
   }, [])
 
-  const clearError = () => setError(0) // очистить ошибку
+  const clearError = () => setError(null) // очистить ошибку
 
-  return { request, error, clearError };
+  return (
+    { request, error, clearError }
+  );
 }
 
 export default useRequest;
