@@ -4,9 +4,12 @@ import React, { useState, useEffect } from "react";
 import useRequest from "../hooks/request.hook.js";
 import useMessage from "../hooks/message.hook.js";
 
+import useAuth from "../hooks/auth.hook.js";
+
 function AuthPage() {
   const message = useMessage();
   const { request, error, clearError } = useRequest(); // ошибка error прилетает из request.hook
+  const {login} = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -27,7 +30,6 @@ function AuthPage() {
     try {
       const data = await request("api/auth/register", "POST", { ...form })
       message(data.message)
-      // console.log(data)
     } catch (err) {
       // обработано в request.hook
     }
@@ -37,6 +39,7 @@ function AuthPage() {
     try {
       const data = await request("api/auth/login", "POST", { ...form })
       message(data.message);
+      login(data.token, data.userID)
     } catch (error) {
       console.log(`loginHandler: ${error}`)
     }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const storageName = "userData";
 
@@ -10,12 +10,22 @@ function useAuth() {
     setToken(jwtToken);
     setUserID(id);
 
-    localStorage.setItem();
+    localStorage.setItem(storageName, JSON.stringify({ token: jwtToken, userID: id }));
   }
 
   const logout = () => {
+    setToken(null);
+    setUserID(null);
 
+    localStorage.removeItem(storageName)
   }
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem(storageName));
+    if (data && data.token) {
+      login(data.token, data.userID)
+    }
+  }, [login])
 
   return (
     { token, userID, login, logout }
