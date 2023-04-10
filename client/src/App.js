@@ -2,6 +2,7 @@ import React from "react";
 import useRoutes from "./routes.js";
 import useAuth from "./hooks/auth.hook.js";
 import "materialize-css";
+import Navbar from "./components/Navbar.js";
 
 function App() {
   const { token } = useAuth();
@@ -10,9 +11,12 @@ function App() {
   const routes = useRoutes(isAuth, isNormal);
 
   return (
-    <div className="container">
-      {routes}
-    </div>
+    <>
+      {isAuth && <Navbar />}
+      <div className="container">
+        {routes}
+      </div>
+    </>
   )
 }
 
