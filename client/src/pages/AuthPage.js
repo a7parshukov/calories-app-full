@@ -1,15 +1,16 @@
 // Страница авторизации
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import useRequest from "../hooks/request.hook.js";
 import useMessage from "../hooks/message.hook.js";
+import AuthContext from "../context/AuthContext.js";
 
 import useAuth from "../hooks/auth.hook.js";
 
 function AuthPage() {
+  const auth = useContext(AuthContext);
   const message = useMessage();
   const { request, error, clearError } = useRequest(); // ошибка error прилетает из request.hook
-  const {login} = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -39,7 +40,7 @@ function AuthPage() {
     try {
       const data = await request("api/auth/login", "POST", { ...form })
       message(data.message);
-      login(data.token, data.userID)
+      auth.login(data.token, data.userID)
     } catch (error) {
       console.log(`loginHandler: ${error}`)
     }

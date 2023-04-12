@@ -3,18 +3,33 @@
 // 66.5 + 13.75 * Weight (кг) + 5.003 * Height (см) - 6.775 * personAge (год) = для мужчин
 // 655.1 + 9.563 * Weight (кг) + 1.85 * Height (см) - 4.676 * personAge (год) = для женщин
 
-import React from "react";
+import React, { useState } from "react";
+// для работы с select в React использую https://react-select.com/
+import Select from "react-select";
 
 function NormaPage() {
+  const [normCalories, setNormCalories] = useState(0);
+  const gender = [
+    { value: "men", label: "Мужской" },
+    { value: "women", label: "Женский" }
+  ]
+
+  function culcCaloriesForMen(weight, height, age) {
+    let calories = 66.5 + 13.75 * weight + 5.003 * height - 6.775 * age;
+    return calories;
+  }
+
+  function culcCaloriesForWomen(weight, height, age) {
+    let calories = 655.1 + 9.563 * weight + 1.85 * height - 4.676 * age;
+    return calories;
+  }
+
   return (
     <div>
       <h1>Определить свою норму (калории)</h1>
       <div>
         <label>Пол
-          <select name="" id="">
-            <option value="">Мужской</option>
-            <option value="">Женский</option>
-          </select>
+          <Select options={gender} />
         </label>
       </div>
       <div>
@@ -34,8 +49,9 @@ function NormaPage() {
       </div>
       <button>Рассчитать</button>
       <div>
-        Ваша норма ххх калорий в день
+        Ваша норма {normCalories} калорий в день
       </div>
+      <button>В дневник</button>
     </div>
   )
 }
