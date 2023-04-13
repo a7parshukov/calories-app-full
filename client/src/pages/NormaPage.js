@@ -4,8 +4,6 @@
 // 655.1 + 9.563 * Weight (кг) + 1.85 * Height (см) - 4.676 * personAge (год) = для женщин
 
 import React, { useState } from "react";
-// для работы с select в React использую https://react-select.com/
-import Select from "react-select";
 
 function NormaPage() {
   const [normCalories, setNormCalories] = useState(0);
@@ -16,14 +14,9 @@ function NormaPage() {
     height: null,
     age: null
   });
-  // для работы с Select
-  const gender = [
-    { value: "men", label: "Мужской" },
-    { value: "women", label: "Женский" }
-  ]
 
   const changeHandler = (event) => {
-    setNormaForm({...normaForm, [event.target.name]: event.target.value})
+    setNormaForm({ ...normaForm, [event.target.name]: event.target.value })
   }
 
   function culcCaloriesForMen(weight, height, age) {
@@ -41,40 +34,44 @@ function NormaPage() {
       <h1>Определить свою норму (калории)</h1>
       <div>
         <label>Пол
-          <Select 
-            options={gender} 
-            placeholder="Выбрать пол" 
-            name="gender" 
-            value={gender.find(obj => obj.value)}
+          <div className="">
+            <select 
+              name="gender"
+              defaultValue="noGender"
+              onChange={changeHandler}
+            >
+              <option value="noGender" disabled>Выбрать</option>
+              <option value="men">Мужской</option>
+              <option value="women">Женский</option>
+            </select>
+          </div>
+        </label>
+      </div>
+      <div>
+        <label>Вес, кг
+          <input
+            type="text"
+            placeholder="Введите вес, кг"
+            name="weight"
             onChange={changeHandler}
           />
         </label>
       </div>
       <div>
-        <label>Вес, кг
-          <input 
-            type="text" 
-            placeholder="Введите вес, кг" 
-            name="weight"
-            onChange={changeHandler} 
-          />
-        </label>
-      </div>
-      <div>
         <label>Рост, см
-          <input 
-            type="text" 
-            placeholder="Введите рост, см" 
+          <input
+            type="text"
+            placeholder="Введите рост, см"
             name="height"
-            onChange={changeHandler} 
+            onChange={changeHandler}
           />
         </label>
       </div>
       <div>
         <label>Возраст
-          <input 
-            type="text" 
-            placeholder="Сколько Вам полных лет?" 
+          <input
+            type="text"
+            placeholder="Сколько Вам полных лет?"
             name="age"
             onChange={changeHandler}
           />
