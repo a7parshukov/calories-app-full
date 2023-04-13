@@ -5,8 +5,6 @@ import useRequest from "../hooks/request.hook.js";
 import useMessage from "../hooks/message.hook.js";
 import AuthContext from "../context/AuthContext.js";
 
-import useAuth from "../hooks/auth.hook.js";
-
 function AuthPage() {
   const auth = useContext(AuthContext);
   const message = useMessage();
