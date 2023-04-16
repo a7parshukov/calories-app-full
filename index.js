@@ -10,20 +10,18 @@ import mongoose from "mongoose";
 import config from "config";
 
 // для работы с роутерами (express)
-import router from "./routes/auth.routes.js"
-
+import authRoutes from "./routes/auth.routes.js"
 
 const app = express();
 const PORT = config.get("PORT") || 3000;
 const mongoURL = config.get("mongoURL");
-
 
 // middleware для парсинга body в json (response):
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
 // middleware для авторизации:
-app.use("/api/auth", router)
+app.use("/api/auth", authRoutes);
 
 async function main() {
   try {

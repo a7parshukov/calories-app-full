@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import { body, validationResult } from "express-validator";
 // JSON WEB TOKEN:
 import jwt from "jsonwebtoken";
+import auth from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -75,8 +76,8 @@ router.post(
       const { email, password } = req.body
 
       // !!! ВНИМАНИЕ! Понять, почему он читает ya.ru как yandex.ru (видно, если консолировать данные:
-			// console.log(email, password)
-			// соответственно, можно зарегистрировать два аккаунта ya.ru и yandex.ru, а req присылает только yandex.ru
+      // console.log(email, password)
+      // соответственно, можно зарегистрировать два аккаунта ya.ru и yandex.ru, а req присылает только yandex.ru
 
       // проверка логина:
       const isUser = await User.findOne({ email });
@@ -93,10 +94,10 @@ router.post(
       // для повышения надежности при общении между пользователем и сервером используется JSON WEB TOKEN:
       // https://www.npmjs.com/package/jsonwebtoken 
       const webToken = jwt.sign(
-        {userID: isUser._id}, 
+        { userID: isUser._id },
         config.get("privateKey"),
-        {expiresIn: "1h"}
-        )
+        { expiresIn: "1h" }
+      )
 
       // успех
       res.status(200).json({ token: webToken, userID: isUser._id })
@@ -104,5 +105,23 @@ router.post(
       res.status(500).json({ message: "Что-то пошло не так" })
     }
   })
+
+// добавить норматив к пользователю по /api/auth/add:
+router.post("/add", auth, async (req, res) => {
+  try {
+    // получить с фронта значение:
+    const { norma } = req.body;
+    console.log(req.user.userID);
+
+    // взять активного пользователя (ID) и записать в него нормокалории:
+
+    // сохранить норму:
+    // await User.findOneAndUpdate({_id: req.user.userID}, { norma: norma })
+
+    res.status(201).json({ message: "Добавлены нормокалории" });
+  } catch (error) {
+    res.status(500).json({ message: "Не смог связать норму калорий с пользователем" })
+  }
+})
 
 export default router;

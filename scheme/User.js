@@ -11,7 +11,10 @@ const userScheme = new Schema({
     type: String,
     required: true,
     // minLength: 6,
-  }
+  },
+  norma: {
+    type: Number,
+  },
 }, {versionKey: false})
 
 const User = model("User", userScheme);
