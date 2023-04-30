@@ -8,10 +8,12 @@ export default (req, res, next) => {
   }
 
   try {
-    const token = req.headers.authorization.split(" ")[1]; // НЕТ ТАКОГО ЗАГОЛОВКА!
+    // Получить токен доступа:
+    const token = req.headers.authorization;
+    console.log(token)
 
     if (!token) {
-      res.status(401).json({ message: "Нет авторизации" });
+      return res.status(401).json({ message: "Нет авторизации" });
     }
 
     const decoded = jwt.verify(token, config.get("privateKey"));

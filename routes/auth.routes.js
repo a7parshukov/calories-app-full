@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import { body, validationResult } from "express-validator";
 // JSON WEB TOKEN:
 import jwt from "jsonwebtoken";
-import auth from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -105,23 +104,5 @@ router.post(
       res.status(500).json({ message: "Что-то пошло не так" })
     }
   })
-
-// добавить норматив к пользователю по /api/auth/add:
-router.post("/add", auth, async (req, res) => {
-  try {
-    // получить с фронта значение:
-    const { norma } = req.body;
-    console.log(req.user.userID);
-
-    // взять активного пользователя (ID) и записать в него нормокалории:
-
-    // сохранить норму:
-    // await User.findOneAndUpdate({_id: req.user.userID}, { norma: norma })
-
-    res.status(201).json({ message: "Добавлены нормокалории" });
-  } catch (error) {
-    res.status(500).json({ message: "Не смог связать норму калорий с пользователем" })
-  }
-})
 
 export default router;

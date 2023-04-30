@@ -2,8 +2,8 @@
 
 /* TODO:
 - Валидация значений данных возраста, роста и т.п.
+- округлить норматив
 - Кнопка "В дневник" появляется только при условии расчета
-
 */
 
 import React, { useState } from "react";
@@ -22,8 +22,7 @@ function NormaPage() {
 
   const { request } = useRequest();
 
-
-  const handlerChange = (event) => {
+  const handleChange = (event) => {
     setNormaForm({ ...normaForm, [event.target.name]: event.target.value })
   }
 
@@ -34,11 +33,12 @@ function NormaPage() {
 
   const handleNormaSave = async () => {
     try {
-      const data = await request("/api/auth/add", "POST", { norma: normCalories });
-      console.log(data);
-    } catch (error) { }
+      const response = await request("/api/users/normalise", "PUT", { norma: normCalories });
+      console.log("PUT is OK")
+    } catch (error) {
+      console.log(error)
+    }
   }
-
 
   function culcCaloriesForMen(weight, height, age) {
     return (66.5 + 13.75 * weight + 5.003 * height - 6.775 * age);
@@ -57,7 +57,7 @@ function NormaPage() {
             <select
               name="gender"
               defaultValue="noGender"
-              onChange={handlerChange}
+              onChange={handleChange}
             >
               <option value="noGender" disabled>Выбрать</option>
               <option value="men">Мужской</option>
@@ -72,7 +72,7 @@ function NormaPage() {
             type="text"
             placeholder="Введите вес, кг"
             name="weight"
-            onChange={handlerChange}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -82,7 +82,7 @@ function NormaPage() {
             type="text"
             placeholder="Введите рост, см"
             name="height"
-            onChange={handlerChange}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -92,7 +92,7 @@ function NormaPage() {
             type="text"
             placeholder="Сколько Вам полных лет?"
             name="age"
-            onChange={handlerChange}
+            onChange={handleChange}
           />
         </label>
       </div>
