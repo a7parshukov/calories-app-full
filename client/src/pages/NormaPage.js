@@ -6,10 +6,12 @@
 - Кнопка "В дневник" появляется только при условии расчета
 */
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import useRequest from "../hooks/request.hook.js";
+import AuthContext from "../context/AuthContext.js";
 
 function NormaPage() {
+  const auth = useContext(AuthContext);
   const [normCalories, setNormCalories] = useState(0);
   // форма пользователя:
   const [normaForm, setNormaForm] = useState({
@@ -33,7 +35,11 @@ function NormaPage() {
 
   const handleNormaSave = async () => {
     try {
-      const response = await request("/api/users/normalise", "PUT", { norma: normCalories });
+      const response = await request("/api/users/normalise", "PUT", {
+        norma: normCalories 
+      }, {
+        Authorization: `Bearer ${auth.token}`
+      });
       console.log("PUT is OK")
     } catch (error) {
       console.log(error)
