@@ -35,12 +35,13 @@ function NormaPage() {
 
   const handleNormaSave = async () => {
     try {
-      const response = await request("/api/users/normalise", "PUT", {
+      await request("/api/users/normalise", "PUT", {
         norma: normCalories 
       }, {
         Authorization: `Bearer ${auth.token}`
       });
-      console.log("PUT is OK")
+      auth.isNormal = true;
+      console.log("Норматив сохранен")
     } catch (error) {
       console.log(error)
     }

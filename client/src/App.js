@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useRoutes from "./routes.js";
 import AuthContext from "./context/AuthContext.js";
 import { BrowserRouter } from "react-router-dom";
@@ -10,12 +10,11 @@ import "materialize-css";
 function App() {
   const { token, userID, login, logout } = useAuth();
   const isAuth = Boolean(token); // если есть token - то true
-  const isNormal = false;
   const routes = useRoutes(isAuth, isNormal);
 
   return (
     <AuthContext.Provider value={
-      { token, userID, login, logout }
+      { token, userID, login, logout, isAuth, isNormal }
     }>
       <BrowserRouter>
         {isAuth && <Navbar />}
