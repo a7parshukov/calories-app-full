@@ -1,11 +1,5 @@
 // Страница для подсчета норматива
 
-/* TODO:
-- Валидация значений данных возраста, роста и т.п.
-- округлить норматив
-- Кнопка "В дневник" появляется только при условии расчета
-*/
-
 import React, { useState, useContext } from "react";
 import useRequest from "../hooks/request.hook.js";
 import AuthContext from "../context/AuthContext.js";
