@@ -7,6 +7,8 @@ function DataPage() {
     _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10
   })
 
+  const { nameFood, weightFood } = formData;
+
   const [data, setData] = useState([
     { _id: 1, nameFood: "Хлеб", weightFood: 50, caloriesFood: 120 },
     { _id: 2, nameFood: "Колбаса", weightFood: 60, caloriesFood: 220 }
@@ -20,9 +22,10 @@ function DataPage() {
   const sumCalories = (array) => array.reduce(
     (sum, obj) => sum + obj.caloriesFood, 0)
 
-  function addingFood() {
+  const addingFood = () => {
     const { ...food } = formData;
     setData([food, ...data]);
+    setFormData({ _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10 })
   }
 
   return (
@@ -39,15 +42,17 @@ function DataPage() {
             placeholder="Выбрать продукт"
             name="nameFood"
             onChange={handleChange}
+            value={nameFood}
           />
           <input
             type="text"
             placeholder="Количество, граммы"
             name="weightFood"
             onChange={handleChange}
+            value={weightFood}
           />
           <button
-            type="submit"
+            type="button"
             onClick={addingFood}>
             Добавить
           </button>

@@ -1,4 +1,5 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
+import Food from "./Food.js";
 
 const userScheme = new Schema({
   email: {
@@ -15,6 +16,10 @@ const userScheme = new Schema({
   norma: {
     type: Number,
   },
+  food: [{
+    type: Types.ObjectId,
+    ref: "Food"
+  }]
 }, {versionKey: false})
 
 const User = model("User", userScheme);
