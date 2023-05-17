@@ -19,7 +19,7 @@ const mongoURL = config.get("mongoURL");
 
 // middleware для парсинга body в json (response):
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // middleware для авторизации:
 app.use("/api/auth", authRoutes);
@@ -32,7 +32,7 @@ async function main() {
       console.log(`Server started on port ${PORT}`)
     })
     console.log(`${mongoURL} starts...`);
-  } catch(err) {
+  } catch (err) {
     console.log(`Error: ${err.message}`)
   } finally {
     //await mongoose.disconnect();

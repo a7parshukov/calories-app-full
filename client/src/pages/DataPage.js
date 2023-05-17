@@ -1,18 +1,28 @@
 // Основная страница с данными
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import useRequest from "../hooks/request.hook";
 
 function DataPage() {
+  const { request } = useRequest();
+
   const [formData, setFormData] = useState({
     _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10
   })
 
   const { nameFood, weightFood } = formData;
 
-  const [data, setData] = useState([
-    { _id: 1, nameFood: "Хлеб", weightFood: 50, caloriesFood: 120 },
-    { _id: 2, nameFood: "Колбаса", weightFood: 60, caloriesFood: 220 }
-  ])
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    async function startFetching() {
+      const data = await request("/api/users/", "GET");
+      if(data) {
+        setData(data);
+      }
+    }
+    startFetching();
+  }, [])
 
   const handleChange = (event) => {
     const { name, value } = event.target
