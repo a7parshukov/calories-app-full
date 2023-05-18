@@ -7,7 +7,7 @@ function DataPage() {
   const { request } = useRequest();
 
   const [formData, setFormData] = useState({
-    _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10
+    _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 0
   })
 
   const { nameFood, weightFood } = formData;
@@ -32,9 +32,15 @@ function DataPage() {
   const sumCalories = (array) => array.reduce(
     (sum, obj) => sum + obj.caloriesFood, 0)
 
-  const addingFood = () => {
+  // const addingFood = () => {
+  //   const { ...food } = formData;
+  //   setData([food, ...data]);
+  //   setFormData({ _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10 })
+  // }
+  const addingFood = async () => {
     const { ...food } = formData;
-    setData([food, ...data]);
+    const req = await request("/api/users/", "POST", food);
+    setData([req, ...data]);
     setFormData({ _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10 })
   }
 

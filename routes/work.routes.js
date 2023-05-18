@@ -35,9 +35,25 @@ router.put("/normalise", auth, async (req, res) => {
 
 // /api/users/
 // метод GET для получения списка с сервера:
-router.get("/", (req, res) => {
-  res.status(200).json(FOODLIST)
+router.get("/", async (req, res) => {
+  try {
+    res.status(200).json(FOODLIST)
+  } catch (error) {
+    res.status(500).json({ message: "Что-то пошло не так..." })
+  }
 }
 )
+
+// /api/users/
+// метод POST для отправки данных на сервер:
+router.post("/", async (req, res) => {
+  try {
+    const newFood = { ...req.body, _id: v4(), caloriesFood: 150 };
+    FOODLIST.unshift(newFood);
+    res.status(201).json(newFood);
+  } catch (error) {
+    res.status(500).json({ message: "Что-то пошло не так..." })
+  }
+})
 
 export default router;
