@@ -1,24 +1,34 @@
 // Основная страница с данными
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import useRequest from "../hooks/request.hook";
+import AuthContext from "../context/AuthContext";
 
 function DataPage() {
+  const auth = useContext(AuthContext)
   const { request } = useRequest();
 
   const [formData, setFormData] = useState({
-    _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 0
+    nameFood: "", weightFood: 0
   })
 
   const { nameFood, weightFood } = formData;
 
   const [data, setData] = useState([])
 
+  // Получить данные пользователя с backend:
   useEffect(() => {
     async function startFetching() {
-      const data = await request("/api/users/", "GET");
-      if(data) {
-        setData(data);
+      try {
+        const data = await request("/api/users/", "GET", null, {
+          Authorization: `Bearer ${auth.token}`
+        });
+        if (data) {
+          setData(data);
+        }
+        // ТУТ НАПИСАТЬ КРУТИЛКУ, ПОКА ЖДЕШЬ ПРОГРУЗА БД!
+      } catch (error) {
+        console.error(error)
       }
     }
     startFetching();
@@ -32,16 +42,28 @@ function DataPage() {
   const sumCalories = (array) => array.reduce(
     (sum, obj) => sum + obj.caloriesFood, 0)
 
+  // Отправить данные (только front)
   // const addingFood = () => {
   //   const { ...food } = formData;
   //   setData([food, ...data]);
   //   setFormData({ _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10 })
   // }
+
+  // Отправить данные на back:
   const addingFood = async () => {
-    const { ...food } = formData;
-    const req = await request("/api/users/", "POST", food);
-    setData([req, ...data]);
-    setFormData({ _id: new Date(), nameFood: "", weightFood: 0, caloriesFood: 10 })
+    try {
+      const { ...food } = formData;
+      const newFood = await request(
+        "/api/users/",
+        "POST",
+        food,
+        { Authorization: `Bearer ${auth.token}` }
+      );
+      setData([newFood, ...data]);
+      setFormData({ nameFood: "", weightFood: 0 });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

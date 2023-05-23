@@ -4,11 +4,14 @@ import User from "./User.js"
 const foodSchema = new Schema({
   nameFood: {
     type: String,
-    required: true
+    
   },
   weightFood: {
     type: Number,
-    required: true
+    
+  },
+  caloriesFood: {
+    type: Number,
   },
   owner: {
     type: Types.ObjectId,
