@@ -1,4 +1,4 @@
-// Страница для подсчета норматива
+// Страница для подсчета норматива пользователя
 
 import React, { useState, useContext } from "react";
 import useRequest from "../hooks/request.hook.js";
@@ -29,7 +29,7 @@ function NormaPage() {
 
   const handleNormaSave = async () => {
     try {
-      await request("/api/users/normalise", "PUT", {
+      await request("/api/users/normalise", "POST", {
         norma: normCalories 
       }, {
         Authorization: `Bearer ${auth.token}`
