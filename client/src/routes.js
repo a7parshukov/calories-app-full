@@ -7,7 +7,6 @@ import AuthPage from "./pages/AuthPage.js";
 import DataPage from "./pages/DataPage.js";
 import NormaPage from "./pages/NormaPage.js";
 
-
 function useRoutes(isAuthenticated, isNormalized) {
   // если пользователь авторизован, но не выставил норматив:
   if (isAuthenticated && !isNormalized) {

@@ -1,14 +1,11 @@
 import { Schema, model, Types } from "mongoose";
-import User from "./User.js"
 
 const foodSchema = new Schema({
   nameFood: {
     type: String,
-    
   },
   weightFood: {
     type: Number,
-    
   },
   caloriesFood: {
     type: Number,

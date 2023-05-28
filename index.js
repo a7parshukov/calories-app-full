@@ -11,7 +11,8 @@ import config from "config";
 
 // для работы с роутерами (express)
 import authRoutes from "./routes/auth.routes.js";
-import workRoutes from "./routes/work.routes.js";
+import usersRoutes from "./routes/users.routes.js";
+import productsRoutes from "./routes/products.routes.js";
 
 const app = express();
 const PORT = config.get("PORT") || 3000;
@@ -23,7 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // middleware для авторизации:
 app.use("/api/auth", authRoutes);
-app.use("/api/users", workRoutes)
+app.use("/api/users", usersRoutes);
+app.use("/api/products", productsRoutes);
 
 async function main() {
   try {

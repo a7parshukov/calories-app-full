@@ -14,7 +14,16 @@ function DataPage() {
 
   const { nameFood, weightFood } = formData;
 
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
+
+
+  const [productForm, setProductForm] = useState({
+    nameProduct: "", caloriesPer100g: 0
+  })
+
+  const { nameProduct, caloriesPer100g } = productForm;
+
+  const [productList, setProductList] = useState([]);
 
   // Получить данные пользователя с backend:
   useEffect(() => {
@@ -34,9 +43,28 @@ function DataPage() {
     startFetching();
   }, [])
 
+  useEffect(() => {
+    async function dataProducts() {
+      try {
+        const data = await request("/api/products/name", "GET");
+        if(data) {
+          setProductList(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    dataProducts();
+  }, [])
+
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
+  }
+
+  const handleChange2 = (event) => {
+    const { name, value } = event.target
+    setProductForm({ ...productForm, [name]: value })
   }
 
   const sumCalories = (array) => array.reduce(
@@ -66,11 +94,46 @@ function DataPage() {
     }
   }
 
+  const addProduct = async () => {
+    try {
+      const { ...product } = productForm;
+      const data = await request("/api/products/add", "POST", product);
+      alert(data.message);
+      setProductForm({ nameProduct: "", caloriesPer100g: 0 })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
       <h1>Дневник питания</h1>
       <div>
         число-месяц-год (выбор)
+      </div>
+      <div>
+        <h2>Добавить продукт в базу данных</h2>
+        <form>
+          <input
+            type="text"
+            placeholder="Добавить продукт"
+            name="nameProduct"
+            onChange={handleChange2}
+            value={nameProduct}
+          />
+          <input
+            type="text"
+            placeholder="Количество калорий на 100 гр."
+            name="caloriesPer100g"
+            onChange={handleChange2}
+            value={caloriesPer100g}
+          />
+          <button
+            type="button"
+            onClick={addProduct}>
+            Добавить
+          </button>
+        </form>
       </div>
       <div>
         <h2>Поиск продуктов</h2>
@@ -79,9 +142,15 @@ function DataPage() {
             type="text"
             placeholder="Выбрать продукт"
             name="nameFood"
+            list="product-list"
             onChange={handleChange}
             value={nameFood}
           />
+          <datalist id="product-list">
+            {productList.map((elem, key) => (
+              <option key={key} value={elem}></option>
+            ))}
+          </datalist>
           <input
             type="text"
             placeholder="Количество, граммы"

@@ -2,6 +2,7 @@ import { Router } from "express";
 import auth from "../middleware/auth.middleware.js";
 import User from "../scheme/User.js";
 import Food from "../scheme/Food.js";
+import Product from "../scheme/Product.js";
 import { v4 } from "uuid";
 
 const router = Router();
@@ -59,7 +60,11 @@ router.post("/", auth, async (req, res) => {
     const userID = req.user.userID;
     // 1. Принять с фронта:
     const { nameFood, weightFood } = req.body;
-    const newFood = { nameFood, weightFood, caloriesFood: 150, owner: userID };
+    // работа с коллекцией "продуктов"
+    const findProduct = await Product.findOne({nameProduct: nameFood});
+    const culcCalories = weightFood * findProduct.caloriesPer100g * 0.01;
+
+    const newFood = { nameFood, weightFood, caloriesFood: culcCalories, owner: userID };
     // 2. Создать новую запись в базе данных
     const newData = new Food(newFood);
     // 3. Сохранить запись в базе данных

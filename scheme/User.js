@@ -1,5 +1,4 @@
 import { Schema, model, Types } from "mongoose";
-import Food from "./Food.js";
 
 const userScheme = new Schema({
   email: {
