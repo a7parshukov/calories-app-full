@@ -15,8 +15,6 @@ function DataPage() {
     nameFood: "", weightFood: 0
   })
 
-  const { nameFood, weightFood } = formData;
-
   // Вытащить дневник пользователя из базы данных:
   const [data, setData] = useState([]);
 
@@ -74,11 +72,9 @@ function DataPage() {
     <>
       <FoodInput
         productList={productList}
-        addFood={addingFood}
-        formData={formData}
+        addingFood={addingFood}
         setFormData={setFormData}
-        nameFood={nameFood}
-        weightFood={weightFood}
+        {...formData}
       />
       <FoodJournal data={data} />
     </>

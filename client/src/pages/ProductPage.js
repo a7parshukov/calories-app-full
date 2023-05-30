@@ -1,11 +1,9 @@
 // Страница для внесения продукта в базу данных
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import useRequest from "../hooks/request.hook";
-import AuthContext from "../context/AuthContext";
 
 function ProductPage() {
-  const auth = useContext(AuthContext)
   const { request } = useRequest();
 
   // Форма для заполнения:

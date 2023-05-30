@@ -1,6 +1,6 @@
 import React from "react";
 
-function FoodInput({ productList, addFood, formData, setFormData, nameFood, weightFood }) {
+function FoodInput({ productList, addingFood, setFormData, ...formData }) {
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -17,7 +17,7 @@ function FoodInput({ productList, addFood, formData, setFormData, nameFood, weig
           name="nameFood"
           list="product-list"
           onChange={handleChange}
-          value={nameFood}
+          value={formData.nameFood}
         />
         <datalist id="product-list">
           {productList.map((elem, key) => (
@@ -29,12 +29,12 @@ function FoodInput({ productList, addFood, formData, setFormData, nameFood, weig
           placeholder="Количество, граммы"
           name="weightFood"
           onChange={handleChange}
-          value={weightFood}
+          value={formData.weightFood}
         />
         <div>Дата:</div>
         <button
           type="button"
-          onClick={addFood}>
+          onClick={addingFood}>
           Добавить
         </button>
       </form>

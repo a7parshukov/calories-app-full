@@ -9,8 +9,7 @@ import "materialize-css";
 function App() {
   const { token, userID, login, logout } = useAuth();
   const isAuth = Boolean(token); // если есть token - то true
-  const isNormal = true; 
-  const routes = useRoutes(isAuth, isNormal);
+  const routes = useRoutes(isAuth);
 
   return (
     <AuthContext.Provider value={

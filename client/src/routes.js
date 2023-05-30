@@ -6,24 +6,19 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "./pages/AuthPage.js";
 import DataPage from "./pages/DataPage.js";
 import NormaPage from "./pages/NormaPage.js";
+import ProductPage from "./pages/ProductPage.js";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
-function useRoutes(isAuthenticated, isNormalized) {
-  // если пользователь авторизован, но не выставил норматив:
-  if (isAuthenticated && !isNormalized) {
+function useRoutes(isAuthenticated) {
+
+  // для авторизованного пользователя:
+  if (isAuthenticated) {
     return (
       <Routes>
+        <Route path="/" element={<DataPage />} />
         <Route path="/norma" element={<NormaPage />} />
-        <Route path="/*" element={<Navigate to="/norma" />} />
-      </Routes>
-    )
-  }
-
-  // если пользователь авторизован и выставил норматив
-  if (isAuthenticated && isNormalized) {
-    return (
-      <Routes>
-        <Route path="/data" element={<DataPage />} />
-        <Route path="/*" element={<Navigate to="/data" />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     )
   }
@@ -32,7 +27,7 @@ function useRoutes(isAuthenticated, isNormalized) {
   return (
     <Routes>
       <Route path="/" element={<AuthPage />} />
-      <Route path="/*" element={<Navigate to="/" />} />
+      {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Routes>
   )
 }

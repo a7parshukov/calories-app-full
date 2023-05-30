@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import AuthContext from "../context/AuthContext.js";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const auth = useContext(AuthContext);
@@ -8,9 +9,9 @@ function Navbar() {
     <nav>
       <div className="nav-wrapper">
         <ul className="right">
-          <li><a href="/">Личные данные</a></li>
-          <li><a href="/">Внести продукт в базу</a></li>
-          <li><a href="/" onClick={auth.logout}>Выйти</a></li>
+          <li><Link to="/norma">Личные данные</Link></li>
+          <li><Link to="/product">Внести продукт в базу</Link></li>
+          <li><Link to="/" onClick={auth.logout}>Выйти</Link></li>
         </ul>
       </div>
     </nav>
