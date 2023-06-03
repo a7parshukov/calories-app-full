@@ -1,10 +1,14 @@
 @import "~materialize-css/dist/css/materialize.min.css";
 
 html, body {
-  background-color: #424242;
+  background-color: #181818;
   width: 100%;
 }
 
 select {
   display: block;
+}
+
+input {
+  color: white;
 }

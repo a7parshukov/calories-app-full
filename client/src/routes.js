@@ -3,11 +3,11 @@
 
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import AuthPage from "./pages/AuthPage.js";
-import DataPage from "./pages/DataPage.js";
-import NormaPage from "./pages/NormaPage.js";
-import ProductPage from "./pages/ProductPage.js";
-import NotFoundPage from "./pages/NotFoundPage.jsx";
+import AuthPage from "./pages/AuthPage";
+import DataPage from "./pages/DataPage";
+import NormaPage from "./pages/NormaPage";
+import ProductPage from "./pages/ProductPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function useRoutes(isAuthenticated) {
 

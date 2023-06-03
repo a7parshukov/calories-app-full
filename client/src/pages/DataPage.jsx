@@ -5,6 +5,7 @@ import useRequest from "../hooks/request.hook";
 import AuthContext from "../context/AuthContext";
 import FoodJournal from "../components/FoodJournal";
 import FoodInput from "../components/FoodInput";
+import "./DataPage.css";
 
 function DataPage() {
   const auth = useContext(AuthContext)
@@ -70,13 +71,29 @@ function DataPage() {
 
   return (
     <>
-      <FoodInput
-        productList={productList}
-        addingFood={addingFood}
-        setFormData={setFormData}
-        {...formData}
-      />
-      <FoodJournal data={data} />
+      <div className="row">
+        <FoodInput
+          productList={productList}
+          addingFood={addingFood}
+          setFormData={setFormData}
+          {...formData}
+        />
+        <div class="col s12 m6">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Card Title</span>
+              <p>I am a very simple card. I am good at containing small bits of information.
+                I am convenient because I require little markup to use effectively.</p>
+              <span class="card-title">Card Title</span>
+              <p>I am a very simple card. I am good at containing small bits of information.
+                I am convenient because I require little markup to use effectively.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <FoodJournal data={data} />
+      </div>
     </>
   )
 }

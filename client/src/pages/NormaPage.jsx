@@ -1,8 +1,8 @@
 // Страница для подсчета норматива пользователя
 
 import React, { useState, useContext } from "react";
-import useRequest from "../hooks/request.hook.js";
-import AuthContext from "../context/AuthContext.js";
+import useRequest from "../hooks/request.hook";
+import AuthContext from "../context/AuthContext";
 
 function NormaPage() {
   const auth = useContext(AuthContext);
