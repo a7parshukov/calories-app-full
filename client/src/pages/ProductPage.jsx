@@ -30,30 +30,58 @@ function ProductPage() {
   }
 
   return (
-    <>
-      <h1>Добавить продукт в базу данных</h1>
-      <form>
-        <input
-          type="text"
-          placeholder="Добавить продукт"
-          name="nameProduct"
-          onChange={handleChange}
-          value={nameProduct}
-        />
-        <input
-          type="text"
-          placeholder="Количество калорий на 100 гр."
-          name="caloriesPer100g"
-          onChange={handleChange}
-          value={caloriesPer100g}
-        />
-        <button
-          type="button"
-          onClick={addProduct}>
-          Добавить
-        </button>
-      </form>
-    </>
+    <div className="row">
+      <div className="col s12 m8 offset-m2">
+        <div className="card blue-grey lighten-1">
+          <div className="card-content white-text">
+            <span
+              className="card-title"
+              style={{ textTransform: "uppercase" }}
+            >
+              Добавить продукт в базу данных
+            </span>
+            <div className="row">
+              <form className="col s12">
+                <div className="row">
+                  <div className="input-field col s12">
+                    <input
+                      type="text"
+                      placeholder="Название продукта"
+                      name="nameProduct"
+                      onChange={handleChange}
+                      value={nameProduct}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="input-field col s12">
+                    <input
+                      type="text"
+                      placeholder="Количество калорий на 100 гр."
+                      name="caloriesPer100g"
+                      onChange={handleChange}
+                      value={caloriesPer100g}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <button
+                    className="btn waves-effect waves-light"
+                    type="button"
+                    onClick={addProduct}>
+                    Добавить
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div >
+    // <>
+    //   <h1></h1>
+    //  
+    // </>
   )
 }
 

@@ -30,7 +30,7 @@ function NormaPage() {
   const handleNormaSave = async () => {
     try {
       await request("/api/users/normalise", "POST", {
-        norma: normCalories 
+        norma: normCalories
       }, {
         Authorization: `Bearer ${auth.token}`
       });
@@ -50,58 +50,78 @@ function NormaPage() {
   }
 
   return (
-    <div>
-      <h1>Определить свою норму (калории)</h1>
-      <div>
-        <label>Пол
-          <div className="">
-            <select
-              name="gender"
-              defaultValue="noGender"
-              onChange={handleChange}
+    <div className="row">
+      <div className="col s12 m8 offset-m2">
+        <div className="card blue-grey lighten-1">
+          <div className="card-content white-text">
+            <span
+              className="card-title"
+              style={{ textTransform: "uppercase" }}
             >
-              <option value="noGender" disabled>Выбрать</option>
-              <option value="men">Мужской</option>
-              <option value="women">Женский</option>
-            </select>
+              Определить свою норму (калории)
+            </span>
+            <div className="row">
+              <div className="input-field col s12">
+                <p>Пол</p>
+                <select
+                  name="gender"
+                  defaultValue="noGender"
+                  onChange={handleChange}
+                >
+                  <option value="noGender" disabled>Выбрать</option>
+                  <option value="men">Мужской</option>
+                  <option value="women">Женский</option>
+                </select>
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <label>Вес, кг</label>
+                <input
+                  type="text"
+                  name="weight"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <label>Рост, см</label>
+                <input
+                  type="text"
+                  name="height"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="input-field col s12">
+                <label>Возраст</label>
+                <input
+                  type="text"
+                  name="age"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <button
+              className="btn waves-effect waves-light light-blue"
+              onClick={handleCulc}
+            >
+              Рассчитать
+            </button>
+            <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+              Ваша норма {normCalories} калорий в день
+            </div>
+            <button
+              className="btn waves-effect waves-light"
+              onClick={handleNormaSave}
+            >
+              Save and GO
+            </button>
           </div>
-        </label>
+        </div>
       </div>
-      <div>
-        <label>Вес, кг
-          <input
-            type="text"
-            placeholder="Введите вес, кг"
-            name="weight"
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>Рост, см
-          <input
-            type="text"
-            placeholder="Введите рост, см"
-            name="height"
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>Возраст
-          <input
-            type="text"
-            placeholder="Сколько Вам полных лет?"
-            name="age"
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <button onClick={handleCulc}>Рассчитать</button>
-      <div>
-        Ваша норма {normCalories} калорий в день
-      </div>
-      <button onClick={handleNormaSave}>Save and GO</button>
     </div>
   )
 }

@@ -8,35 +8,39 @@ function FoodJournal({ data }) {
     (sum, obj) => sum + obj.caloriesFood, 0)
 
   return (
-    <section>
-      <h2>Дневник питания за {date}</h2>
-      <p>Выбрать другую дату: (календарь)</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Продукт</th>
-            <th>Количество, гр.</th>
-            <th>Калории, ccal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(food => (
-            <tr key={food._id}>
-              <td>{food.nameFood}</td>
-              <td>{food.weightFood}</td>
-              <td>{food.caloriesFood}</td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td></td>
-            <td>ИТОГО</td>
-            <td>{sumCalories(data)}</td>
-          </tr>
-        </tfoot>
-      </table>
-    </section>
+    <div className="col s12 m12">
+      <div className="card blue-grey lighten-1">
+        <div className="card-content white-text">
+          <span className="card-title">Дневник питания за {date}</span>
+          <p>Выбрать другую дату: (календарь)</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Продукт</th>
+                <th>Количество, гр.</th>
+                <th>Калории, ccal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map(food => (
+                <tr key={food._id}>
+                  <td>{food.nameFood}</td>
+                  <td>{food.weightFood}</td>
+                  <td>{food.caloriesFood}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td>ИТОГО</td>
+                <td>{sumCalories(data)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
   )
 }
 

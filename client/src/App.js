@@ -4,6 +4,7 @@ import AuthContext from "./context/AuthContext";
 import { BrowserRouter } from "react-router-dom";
 import useAuth from "./hooks/auth.hook";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import "materialize-css";
 
 function App() {
@@ -17,9 +18,12 @@ function App() {
     }>
       <BrowserRouter>
         {isAuth && <Navbar />}
-        <div className="container">
-          {routes}
-        </div>
+        <main>
+          <div className="container">
+            {routes}
+          </div>
+        </main>
+        {isAuth && <Footer />}
       </BrowserRouter>
     </AuthContext.Provider>
   )

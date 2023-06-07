@@ -7,8 +7,9 @@ function Navbar() {
 
   return (
     <nav>
-      <div className="nav-wrapper">
+      <div className="nav-wrapper blue-grey darken-4">
         <ul className="right">
+          <li><Link to="/">Главная</Link></li>
           <li><Link to="/norma">Личные данные</Link></li>
           <li><Link to="/product">Внести продукт в базу</Link></li>
           <li><Link to="/" onClick={auth.logout}>Выйти</Link></li>

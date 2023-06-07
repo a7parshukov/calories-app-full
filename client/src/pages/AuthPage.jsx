@@ -56,26 +56,26 @@ function AuthPage() {
             >
               Войти в свой аккаунт
             </span>
-            <div class="row">
-              <div class="input-field col s12">
+            <div className="row">
+              <div className="input-field col s12">
                 <input
                   type="email"
                   id="email"
                   name="email"
                   onChange={changeHandler}
                 />
-                <label for="email">Введите email</label>
+                <label htmlFor="email">Введите email</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
+            <div className="row">
+              <div className="input-field col s12">
                 <input
                   type="password"
                   id="password"
                   name="password"
                   onChange={changeHandler}
                 />
-                <label for="password">Введите пароль</label>
+                <label htmlFor="password">Введите пароль</label>
               </div>
             </div>
             <div className="auth-buttons">
@@ -86,7 +86,7 @@ function AuthPage() {
                 Войти
               </button>
               <button
-                className="btn waves-effect waves-light  light-blue"
+                className="btn waves-effect waves-light light-blue"
                 onClick={registerHandler}>
                 Регистрация
               </button>

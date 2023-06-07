@@ -78,13 +78,13 @@ function DataPage() {
           setFormData={setFormData}
           {...formData}
         />
-        <div class="col s12 m6">
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">Card Title</span>
+        <div className="col s12 m6">
+          <div className="card blue-grey lighten-1">
+            <div className="card-content white-text">
+              <span className="card-title">Card Title</span>
               <p>I am a very simple card. I am good at containing small bits of information.
                 I am convenient because I require little markup to use effectively.</p>
-              <span class="card-title">Card Title</span>
+              <span className="card-title">Card Title</span>
               <p>I am a very simple card. I am good at containing small bits of information.
                 I am convenient because I require little markup to use effectively.</p>
             </div>
