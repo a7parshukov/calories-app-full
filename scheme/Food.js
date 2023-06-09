@@ -10,6 +10,9 @@ const foodSchema = new Schema({
   caloriesFood: {
     type: Number,
   },
+  dateFood: {
+    
+  },
   owner: {
     type: Types.ObjectId,
     ref: "User"
