@@ -33,7 +33,16 @@ function FoodInput({ productList, addingFood, setFormData, ...formData }) {
               onChange={handleChange}
               value={formData.weightFood}
             />
-            <div>Дата:</div>
+            <label>
+              Дата:
+              <input 
+                type="date"
+                name="dateFood"
+                onChange={handleChange}
+                value={formData.dateFood}
+                // new Date().toISOString().substr(0,10)
+              />
+            </label>
             <button
               type="button"
               onClick={addingFood}

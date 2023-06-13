@@ -11,7 +11,7 @@ const foodSchema = new Schema({
     type: Number,
   },
   dateFood: {
-    
+    type: Date,
   },
   owner: {
     type: Types.ObjectId,

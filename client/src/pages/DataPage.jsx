@@ -13,10 +13,11 @@ function DataPage() {
 
   // Основная форма для заполнения:
   const [formData, setFormData] = useState({
-    nameFood: "", weightFood: 0
+    nameFood: "", weightFood: 0, dateFood: ""
   })
 
   // Вытащить дневник пользователя из базы данных:
+  // UPD: вытащить дневник пользователя ОТНОСИТЕЛЬНО ДАТЫ из базы пользователя:
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ function DataPage() {
         { Authorization: `Bearer ${auth.token}` }
       );
       setData([newFood, ...data]);
-      setFormData({ nameFood: "", weightFood: 0 });
+      setFormData({ nameFood: "", weightFood: 0, dateFood: "" });
     } catch (error) {
       console.error(error);
     }

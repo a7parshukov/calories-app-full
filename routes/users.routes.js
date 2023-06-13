@@ -51,12 +51,12 @@ router.post("/", auth, async (req, res) => {
     // получить userID из tokena:
     const userID = req.user.userID;
     // 1. Принять с фронта:
-    const { nameFood, weightFood } = req.body;
+    const { nameFood, weightFood, dateFood } = req.body;
     // работа с коллекцией "продуктов"
     const findProduct = await Product.findOne({nameProduct: nameFood});
     const culcCalories = weightFood * findProduct.caloriesPer100g * 0.01; // получили конкретное число ccal и далее отправили в newFood
 
-    const newFood = { nameFood, weightFood, caloriesFood: culcCalories, owner: userID };
+    const newFood = { nameFood, weightFood, caloriesFood: culcCalories, dateFood, owner: userID };
     // 2. Создать новую запись в базе данных
     const newData = new Food(newFood);
     // 3. Сохранить запись в базе данных
