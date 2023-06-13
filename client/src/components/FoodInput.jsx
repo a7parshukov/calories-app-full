@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useRequest from "../hooks/request.hook";
 
-function FoodInput({ productList, addingFood, setFormData, ...formData }) {
+function FoodInput({ auth, onFoodAdded }) {
+  const { request } = useRequest();
+
+  // Основная форма для заполнения:
+  const [formData, setFormData] = useState({
+    nameFood: "", weightFood: 0, dateFood: ""
+  })
 
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData({ ...formData, [name]: value })
+  }
+
+  // Вытащить список продуктов из базы данных для отображения в поле input:
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    async function dataProducts() {
+      try {
+        const data = await request("/api/products/name", "GET");
+        if (data) {
+          setProductList(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    dataProducts();
+  }, []);
+
+  // Отправить данные на back:
+  const addingFood = async () => {
+    try {
+      const { ...food } = formData;
+      const newFood = await request(
+        "/api/users/",
+        "POST",
+        food,
+        { Authorization: `Bearer ${auth.token}` }
+      );
+      setFormData({ nameFood: "", weightFood: 0, dateFood: "" });
+      onFoodAdded()
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -35,12 +76,11 @@ function FoodInput({ productList, addingFood, setFormData, ...formData }) {
             />
             <label>
               Дата:
-              <input 
+              <input
                 type="date"
                 name="dateFood"
                 onChange={handleChange}
                 value={formData.dateFood}
-                // new Date().toISOString().substr(0,10)
               />
             </label>
             <button

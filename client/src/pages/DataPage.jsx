@@ -1,7 +1,6 @@
 // Основная страница с данными
 
-import React, { useEffect, useState, useContext } from "react";
-import useRequest from "../hooks/request.hook";
+import React, { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import FoodJournal from "../components/FoodJournal";
 import FoodInput from "../components/FoodInput";
@@ -9,76 +8,21 @@ import "./DataPage.css";
 
 function DataPage() {
   const auth = useContext(AuthContext)
-  const { request } = useRequest();
+  const [updateFoodJournal, setUpdateFoodJournal] = useState(false);
 
-  // Основная форма для заполнения:
-  const [formData, setFormData] = useState({
-    nameFood: "", weightFood: 0, dateFood: ""
-  })
-
-  // Вытащить дневник пользователя из базы данных:
-  // UPD: вытащить дневник пользователя ОТНОСИТЕЛЬНО ДАТЫ из базы пользователя:
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    async function startFetching() {
-      try {
-        const data = await request("/api/users/", "GET", null, {
-          Authorization: `Bearer ${auth.token}`
-        });
-        if (data) {
-          setData(data);
-        }
-        // ТУТ НАПИСАТЬ КРУТИЛКУ, ПОКА ЖДЕШЬ ПРОГРУЗА БД!
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    startFetching();
-  }, [])
-
-  // Вытащить список продуктов из базы данных:
-  const [productList, setProductList] = useState([]);
-  useEffect(() => {
-    async function dataProducts() {
-      try {
-        const data = await request("/api/products/name", "GET");
-        if (data) {
-          setProductList(data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    dataProducts();
-  }, []);
-
-  // Отправить данные на back:
-  const addingFood = async () => {
-    try {
-      const { ...food } = formData;
-      const newFood = await request(
-        "/api/users/",
-        "POST",
-        food,
-        { Authorization: `Bearer ${auth.token}` }
-      );
-      setData([newFood, ...data]);
-      setFormData({ nameFood: "", weightFood: 0, dateFood: "" });
-    } catch (error) {
-      console.error(error);
-    }
+  /*
+  Когда в FoodInput добавляется пища, то вызывается onFoodAdded.
+  DataPage обновляет updateFoodJournal.
+  Передаем в компонент FoodJournal.
+  */
+  const handleFoodAdded = () => {
+    setUpdateFoodJournal(!updateFoodJournal)
   }
 
   return (
     <>
       <div className="row">
-        <FoodInput
-          productList={productList}
-          addingFood={addingFood}
-          setFormData={setFormData}
-          {...formData}
-        />
+        <FoodInput auth={auth} onFoodAdded={handleFoodAdded} />
         <div className="col s12 m6">
           <div className="card blue-grey lighten-1">
             <div className="card-content white-text">
@@ -93,7 +37,7 @@ function DataPage() {
         </div>
       </div>
       <div className="row">
-        <FoodJournal data={data} />
+        <FoodJournal auth={auth} updateFoodJournal={updateFoodJournal} />
       </div>
     </>
   )

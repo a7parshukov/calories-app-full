@@ -1,21 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import useRequest from "../hooks/request.hook";
 
-function FoodJournal({ data }) {
-  const dateToday = new Date();
-  let dateUserChoise = undefined;
-  const dateToPage = dateUserChoise ? getDateFormat(dateUserChoise) : getDateFormat(dateToday);
+function FoodJournal({ auth, updateFoodJournal }) {
+  const { request } = useRequest();
+  const [userDate, setUserDate] = useState(new Date());
 
-  function getDateFormat(date) {
-    let dateDate = date.getDate();
-    if (dateDate < 10) {
-      dateDate = "0" + dateDate;
+  // Вытащить дневник пользователя из базы данных:
+  // UPD: вытащить дневник пользователя ОТНОСИТЕЛЬНО ДАТЫ из базы пользователя:
+  const [data, setData] = useState([]);
+
+  async function fetchData() {
+    try {
+      const data = await request("/api/users/", "GET", null, {
+        Authorization: `Bearer ${auth.token}`
+      });
+      if (data) {
+        setData(data);
+      }
+      // ТУТ НАПИСАТЬ КРУТИЛКУ, ПОКА ЖДЕШЬ ПРОГРУЗА БД!
+    } catch (error) {
+      console.error(error)
     }
-    let dateMonth = date.getMonth() + 1;
-    if (dateMonth < 10) {
-      dateMonth = "0" + dateMonth;
-    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, [updateFoodJournal])
+
+  function getDateFormatForWindow(date) {
+    // padStart - заполнитель нулями, если в числе менее 2 символов.
+    let dateDate = date.getDate().toString().padStart(2, "0");
+    let dateMonth = (date.getMonth() + 1).toString().padStart(2, "0");
     let dateYear = date.getFullYear();
     return `${dateDate}.${dateMonth}.${dateYear}`;
+  }
+
+  function getDateFormatString(date) {
+    return `${date.toISOString().substr(0, 10)}`;
+  }
+
+  function handleDateChange(event) {
+    const selectedDate = new Date(event.target.value);
+    setUserDate(selectedDate);
   }
 
   // для подсчета суммы калорий в таблице:
@@ -26,14 +52,15 @@ function FoodJournal({ data }) {
     <div className="col s12 m12">
       <div className="card blue-grey lighten-1">
         <div className="card-content white-text">
-          <span className="card-title">Дневник питания от {dateToPage}</span>
+          <span className="card-title">Дневник питания от {getDateFormatForWindow(userDate)}</span>
           <div>
             <label>
               Показать дневник от другой даты:
               <input
                 type="date"
-                name="dateUserChoise"
-                value={dateToday}
+                name="getUserDate"
+                onChange={handleDateChange}
+                value={getDateFormatString(userDate)}
               />
             </label>
             <button
