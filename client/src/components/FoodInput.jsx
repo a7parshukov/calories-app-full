@@ -4,9 +4,11 @@ import useRequest from "../hooks/request.hook";
 function FoodInput({ auth, onFoodAdded }) {
   const { request } = useRequest();
 
+  const today = new Date().toISOString().substring(0, 10);
+
   // Основная форма для заполнения:
   const [formData, setFormData] = useState({
-    nameFood: "", weightFood: 0, dateFood: ""
+    nameFood: "", weightFood: 0, dateFood: today
   })
 
   const handleChange = (event) => {
@@ -35,13 +37,13 @@ function FoodInput({ auth, onFoodAdded }) {
   const addingFood = async () => {
     try {
       const { ...food } = formData;
-      const newFood = await request(
+      await request(
         "/api/users/",
         "POST",
         food,
         { Authorization: `Bearer ${auth.token}` }
       );
-      setFormData({ nameFood: "", weightFood: 0, dateFood: "" });
+      setFormData({ nameFood: "", weightFood: 0, dateFood: today });
       onFoodAdded()
     } catch (error) {
       console.error(error);

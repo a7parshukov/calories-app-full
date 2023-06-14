@@ -10,11 +10,27 @@ const router = Router();
 // метод GET для получения списка с сервера:
 router.get("/", auth, async (req, res) => {
   try {
+    console.log(req.headers['date']);
     // 1. получить userID из token:
     const userID = req.user.userID;
     // 2. по userID профильтровать БД, вернуть записи:
-    const data = await Food.find({owner: userID});
+    const data = await Food.find({ owner: userID });
     // 3. отправить на front:
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json({ message: "Что-то пошло не так..." })
+  }
+}
+)
+
+// /api/users/date
+// метод POST для получения списка с сервера по конкретной дате:
+router.post("/date", auth, async (req, res) => {
+  try {
+    const userID = req.user.userID;
+    const userDate = req.body.date;
+    console.log(userDate);
+    const data = await Food.find({ owner: userID, dateFood: userDate });
     res.status(200).json(data)
   } catch (error) {
     res.status(500).json({ message: "Что-то пошло не так..." })
@@ -53,7 +69,7 @@ router.post("/", auth, async (req, res) => {
     // 1. Принять с фронта:
     const { nameFood, weightFood, dateFood } = req.body;
     // работа с коллекцией "продуктов"
-    const findProduct = await Product.findOne({nameProduct: nameFood});
+    const findProduct = await Product.findOne({ nameProduct: nameFood });
     const culcCalories = weightFood * findProduct.caloriesPer100g * 0.01; // получили конкретное число ccal и далее отправили в newFood
 
     const newFood = { nameFood, weightFood, caloriesFood: culcCalories, dateFood, owner: userID };

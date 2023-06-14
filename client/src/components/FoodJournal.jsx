@@ -11,9 +11,15 @@ function FoodJournal({ auth, updateFoodJournal }) {
 
   async function fetchData() {
     try {
-      const data = await request("/api/users/", "GET", null, {
-        Authorization: `Bearer ${auth.token}`
-      });
+      const data = await request(
+        "/api/users/date",
+        "POST",
+        {
+          date: userDate.toISOString().substring(0, 10),
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        });
       if (data) {
         setData(data);
       }
@@ -65,7 +71,7 @@ function FoodJournal({ auth, updateFoodJournal }) {
             </label>
             <button
               type="button"
-              onClick={() => console.log("See")}
+              onClick={() => fetchData()}
               className="btn waves-effect waves-light"
             >
               Показать
