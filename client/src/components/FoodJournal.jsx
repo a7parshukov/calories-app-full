@@ -9,6 +9,8 @@ function FoodJournal({ auth, updateFoodJournal }) {
   // UPD: вытащить дневник пользователя ОТНОСИТЕЛЬНО ДАТЫ из базы пользователя:
   const [data, setData] = useState([]);
 
+  const [userTodayCalories, setUserTodayCalories] = useState(0);
+
   async function fetchData() {
     try {
       const data = await request(
@@ -22,6 +24,7 @@ function FoodJournal({ auth, updateFoodJournal }) {
         });
       if (data) {
         setData(data);
+        setUserTodayCalories(sumCalories(data));
       }
       // ТУТ НАПИСАТЬ КРУТИЛКУ, ПОКА ЖДЕШЬ ПРОГРУЗА БД!
     } catch (error) {
@@ -53,6 +56,10 @@ function FoodJournal({ auth, updateFoodJournal }) {
   // для подсчета суммы калорий в таблице:
   const sumCalories = (array) => array.reduce(
     (sum, obj) => sum + obj.caloriesFood, 0)
+  
+  
+
+
 
   return (
     <div className="col s12 m12">
@@ -105,7 +112,7 @@ function FoodJournal({ auth, updateFoodJournal }) {
               <tr>
                 <td></td>
                 <td>ИТОГО</td>
-                <td>{sumCalories(data)}</td>
+                <td>{userTodayCalories}</td>
               </tr>
             </tfoot>
           </table>

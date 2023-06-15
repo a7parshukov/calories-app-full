@@ -10,7 +10,6 @@ const router = Router();
 // метод GET для получения списка с сервера:
 router.get("/", auth, async (req, res) => {
   try {
-    console.log(req.headers['date']);
     // 1. получить userID из token:
     const userID = req.user.userID;
     // 2. по userID профильтровать БД, вернуть записи:
@@ -29,7 +28,6 @@ router.post("/date", auth, async (req, res) => {
   try {
     const userID = req.user.userID;
     const userDate = req.body.date;
-    console.log(userDate);
     const data = await Food.find({ owner: userID, dateFood: userDate });
     res.status(200).json(data)
   } catch (error) {
@@ -50,13 +48,22 @@ router.post("/normalise", auth, async (req, res) => {
       { norma: req.body.norma },
       { new: true }
     );
-
     // сохранить:
     await user.save();
-
     res.status(200).json({ message: "Норма калории успешно добалены к пользователю" });
   } catch (err) {
     res.status(500).json({ message: "Не могу добавить норма калории к учетной записи" });
+  }
+});
+
+// /api/users/normalise
+router.get("/normalise", auth, async (req, res) => {
+  try {
+    const userID = req.user.userID;
+    const data = await User.findById( userID );
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json({ message: "Что-то пошло не так..." })
   }
 })
 

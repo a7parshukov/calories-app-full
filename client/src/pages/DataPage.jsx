@@ -4,6 +4,7 @@ import React, { useContext, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import FoodJournal from "../components/FoodJournal";
 import FoodInput from "../components/FoodInput";
+import FoodStatusBar from "../components/FoodStatusBar";
 import "./DataPage.css";
 
 function DataPage() {
@@ -21,22 +22,11 @@ function DataPage() {
 
   return (
     <>
-      <div className="row">
+      <div className="row" style={{ marginBottom: 0 }}>
         <FoodInput auth={auth} onFoodAdded={handleFoodAdded} />
-        <div className="col s12 m6">
-          <div className="card blue-grey lighten-1">
-            <div className="card-content white-text">
-              <span className="card-title">Card Title</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
-              <span className="card-title">Card Title</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
-            </div>
-          </div>
-        </div>
+        <FoodStatusBar auth={auth} userTodayCalories={userTodayCalories} />
       </div>
-      <div className="row">
+      <div className="row" style={{ marginBottom: 0 }}>
         <FoodJournal auth={auth} updateFoodJournal={updateFoodJournal} />
       </div>
     </>

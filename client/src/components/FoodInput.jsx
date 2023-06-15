@@ -12,8 +12,8 @@ function FoodInput({ auth, onFoodAdded }) {
   })
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    setFormData({ ...formData, [name]: value })
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   }
 
   // Вытащить список продуктов из базы данных для отображения в поле input:
@@ -53,7 +53,7 @@ function FoodInput({ auth, onFoodAdded }) {
   return (
     <div className="col s12 m6">
       <div className="card blue-grey lighten-1">
-        <div className="card-content white-text">
+        <div className="card-content white-text" style={{ "height": "330px" }}>
           <span className="card-title">Внести продукт</span>
           <form>
             <input
