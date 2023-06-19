@@ -1,27 +1,9 @@
-import React, { useEffect, useState } from "react";
-import useRequest from "../hooks/request.hook";
+import React from "react";
 
-export default function FoodStatusBar({ auth, userTodayCalories }) {
-  const { request } = useRequest();
+export default function FoodStatusBar({ userDate, userTodayCalories, userNormaCalories }) {
 
-  const [userNormaCalories, setUserNormaCalories] = useState(0);
-  const userRemainsCalories = null;
-  const isPositiveCalories = true;
-
-  const handleUserData = async () => {
-    try {
-      const data = await request("/api/users/normalise", "GET", null, {
-        Authorization: `Bearer ${auth.token}`
-      });
-      if (data) {
-        setUserNormaCalories(data.norma)
-      }
-    } catch (err) {
-      console.error()
-    }
-  }
-
-  useEffect(() => { handleUserData() }, [])
+  const userRemainsCalories = userNormaCalories - userTodayCalories;
+  const isPositiveCalories = userRemainsCalories > 0 ? true : false;
 
   return (
     <div className="col s12 m6 r350">
@@ -30,8 +12,8 @@ export default function FoodStatusBar({ auth, userTodayCalories }) {
           <span className="card-title">Статус</span>
           <div style={{ fontSize: "1.3em" }}>
             <p>Ваш норматив: <span className="calories">{userNormaCalories}</span> Ccal</p>
-            <p>Употреблено сегодня: {userTodayCalories} Ccal</p>
-            <p style={{ color: isPositiveCalories ? "green" : "red" }}>Остаток калорий на сегодня: {userRemainsCalories} Ccal</p>
+            <p>Употреблено в этот день ({userDate}): <span className="calories">{userTodayCalories}</span> Ccal</p>
+            <p style={{ color: isPositiveCalories ? "green" : "red" }}>Остаток калорий на этот день: <span className="calories">{userRemainsCalories}</span> Ccal</p>
           </div>
         </div>
       </div>

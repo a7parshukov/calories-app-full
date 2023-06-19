@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useRequest from "../hooks/request.hook";
 
-function FoodJournal({ auth, updateFoodJournal }) {
+function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayCalories }) {
   const { request } = useRequest();
-  const [userDate, setUserDate] = useState(new Date());
+  const [userDate, setUserDate] = useState(new Date()); // переменная, которую выбирает пользователь
+  const [userDateFromCalendar, setUserDateFromCalendar] = useState(new Date()); // переменная для календаря с выбором даты
 
   // Вытащить дневник пользователя из базы данных:
   // UPD: вытащить дневник пользователя ОТНОСИТЕЛЬНО ДАТЫ из базы пользователя:
@@ -26,7 +27,9 @@ function FoodJournal({ auth, updateFoodJournal }) {
         setData(data);
         setUserTodayCalories(sumCalories(data));
       }
-      // ТУТ НАПИСАТЬ КРУТИЛКУ, ПОКА ЖДЕШЬ ПРОГРУЗА БД!
+      setUserDate(userDateFromCalendar); // установить в userDate ту дату, что выбрана в календаре
+      updateUserDate(getDateFormatForWindow(userDate)); // передается в родительский, для передачи в statusBar
+      updateUserTodayCalories(userTodayCalories); // передается в родительский, для передачи в statusBar
     } catch (error) {
       console.error(error)
     }
@@ -34,7 +37,7 @@ function FoodJournal({ auth, updateFoodJournal }) {
 
   useEffect(() => {
     fetchData();
-  }, [updateFoodJournal])
+  }, [updateFoodJournal, userDate, userTodayCalories])
 
   function getDateFormatForWindow(date) {
     // padStart - заполнитель нулями, если в числе менее 2 символов.
@@ -48,18 +51,18 @@ function FoodJournal({ auth, updateFoodJournal }) {
     return `${date.toISOString().substr(0, 10)}`;
   }
 
-  function handleDateChange(event) {
+  const handleDateChange = (event) => {
     const selectedDate = new Date(event.target.value);
-    setUserDate(selectedDate);
+    setUserDateFromCalendar(selectedDate);
+  }
+
+  const setTodayDate = () => {
+    setUserDateFromCalendar(new Date());
   }
 
   // для подсчета суммы калорий в таблице:
   const sumCalories = (array) => array.reduce(
     (sum, obj) => sum + obj.caloriesFood, 0)
-  
-  
-
-
 
   return (
     <div className="col s12 m12">
@@ -73,19 +76,19 @@ function FoodJournal({ auth, updateFoodJournal }) {
                 type="date"
                 name="getUserDate"
                 onChange={handleDateChange}
-                value={getDateFormatString(userDate)}
+                value={getDateFormatString(userDateFromCalendar)}
               />
             </label>
             <button
               type="button"
-              onClick={() => fetchData()}
+              onClick={fetchData}
               className="btn waves-effect waves-light"
             >
               Показать
             </button>
             <button
               type="button"
-              onClick={() => console.log("save")}
+              onClick={setTodayDate}
               className="btn waves-effect waves-light"
             >
               Сегодня
