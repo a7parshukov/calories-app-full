@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useRequest from "../hooks/request.hook";
+import { FaTrash } from "react-icons/fa"
 
 function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayCalories }) {
   const { request } = useRequest();
@@ -56,13 +57,26 @@ function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayC
     setUserDateFromCalendar(selectedDate);
   }
 
-  const setTodayDate = () => {
-    setUserDateFromCalendar(new Date());
-  }
+  // const setTodayDate = () => {
+  //   setUserDateFromCalendar(new Date());
+  // }
 
   // для подсчета суммы калорий в таблице:
   const sumCalories = (array) => array.reduce(
     (sum, obj) => sum + obj.caloriesFood, 0)
+
+  // удаление продукта из списка:
+  async function deleteUserFood(id) {
+    try {
+      await request(
+        `/api/users/${id}`,
+        `DELETE`,
+      )
+      fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="col s12 m12">
@@ -86,13 +100,13 @@ function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayC
             >
               Показать
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={setTodayDate}
               className="btn waves-effect waves-light"
             >
               Сегодня
-            </button>
+            </button> */}
           </div>
           <table>
             <thead>
@@ -100,6 +114,7 @@ function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayC
                 <th>Продукт</th>
                 <th>Количество, гр.</th>
                 <th>Калории, ccal</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -108,6 +123,17 @@ function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayC
                   <td>{food.nameFood}</td>
                   <td>{food.weightFood}</td>
                   <td>{food.caloriesFood}</td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={() => deleteUserFood(food._id)}
+                      style={{color: "red"}}
+                      className="btn waves-effect waves-light"
+                      title="Удалить"
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -116,6 +142,7 @@ function FoodJournal({ auth, updateFoodJournal, updateUserDate, updateUserTodayC
                 <td></td>
                 <td>ИТОГО</td>
                 <td>{userTodayCalories}</td>
+                <td></td>
               </tr>
             </tfoot>
           </table>

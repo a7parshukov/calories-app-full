@@ -60,7 +60,7 @@ router.post("/normalise", auth, async (req, res) => {
 router.get("/normalise", auth, async (req, res) => {
   try {
     const userID = req.user.userID;
-    const data = await User.findById( userID );
+    const data = await User.findById(userID);
     res.status(200).json(data)
   } catch (error) {
     res.status(500).json({ message: "Что-то пошло не так..." })
@@ -89,6 +89,19 @@ router.post("/", auth, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Произошла ошибка при добавлении данных" })
+  }
+})
+
+// /api/users/:id (id продукта из списка пользователя!)
+// метод для удаления еды у пользователя
+router.delete("/:id", async (req, res) => {
+  try {
+    // const userID = req.user.userID;
+    const foodUserId = req.params.id;
+    await Food.findByIdAndDelete(foodUserId);
+    res.status(200).json({ message: "Продукт удалён" })
+  } catch (error) {
+    res.status(500).json({ message: "Не смог удалить строчку с едой" })
   }
 })
 
