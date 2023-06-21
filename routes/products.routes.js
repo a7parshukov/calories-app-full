@@ -28,5 +28,3 @@ router.post("/add", async (req, res) => {
 });
 
 export default router;
-
-// const data = [{ _id: "6471cb97c3ddb502cf268c3f", nameProduct: "Рыба", caloriesPer100g: 200 }, { _id: "6471cca2e2d618bf782bd1f8", nameProduct: "Хлеб белый", caloriesPer100g: 250 }] 

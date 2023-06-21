@@ -2,6 +2,7 @@
 
 import React, { useContext, useState, useEffect } from "react";
 import useRequest from "../hooks/request.hook";
+import useMessage from "../hooks/message.hook";
 import AuthContext from "../context/AuthContext";
 import FoodJournal from "../components/FoodJournal";
 import FoodInput from "../components/FoodInput";
@@ -44,11 +45,6 @@ function DataPage() {
     setUserTodayCalories(value);
   }
 
-  /*
-  Когда в FoodInput добавляется пища, то вызывается onFoodAdded - т.е. срабатывает handleFoodAdded().
-  DataPage обновляет updateFoodJournal - становится true.
-  true передаем в компонент FoodJournal.
-  */
   const handleFoodAdded = () => {
     setUpdateFoodJournal(!updateFoodJournal)
   }
