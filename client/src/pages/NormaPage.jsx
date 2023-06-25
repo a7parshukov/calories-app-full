@@ -1,22 +1,30 @@
 // Страница для подсчета норматива пользователя
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import useRequest from "../hooks/request.hook";
+import useMessage from "../hooks/message.hook";
 import AuthContext from "../context/AuthContext";
 
 function NormaPage() {
+  const { request, error, clearError } = useRequest();
   const auth = useContext(AuthContext);
+  const message = useMessage();
+
+  // следить за ошибками и показать их при помощи M (Materialize)
+  useEffect(() => {
+    message(error);
+    clearError();
+  }, [error, message, clearError])
+
   const [normCalories, setNormCalories] = useState(0);
   // форма пользователя:
   const [normaForm, setNormaForm] = useState({
-    gender: null,
-    weight: null,
-    height: null,
-    age: null,
+    gender: 0,
+    weight: 0,
+    height: 0,
+    age: 0,
   });
   const { gender, weight, height, age } = normaForm;
-
-  const { request } = useRequest();
 
   const handleChange = (event) => {
     setNormaForm({ ...normaForm, [event.target.name]: event.target.value })
@@ -27,6 +35,12 @@ function NormaPage() {
     setNormCalories(calories);
   }
 
+  let styleBotton = "btn waves-effect waves-light disabled"
+
+  if (normCalories) {
+    styleBotton = "btn waves-effect waves-light"
+  }
+
   const handleNormaSave = async () => {
     try {
       await request("/api/users/normalise", "POST", {
@@ -35,18 +49,19 @@ function NormaPage() {
         Authorization: `Bearer ${auth.token}`
       });
       auth.isNormal = true;
-      console.log("Норматив сохранен")
+      message("Норматив сохранен");
+
     } catch (error) {
       console.log(error)
     }
   }
 
   function culcCaloriesForMen(weight, height, age) {
-    return (66.5 + 13.75 * weight + 5.003 * height - 6.775 * age);
+    return Math.round(66.5 + 13.75 * weight + 5.003 * height - 6.775 * age);
   }
 
   function culcCaloriesForWomen(weight, height, age) {
-    return (655.1 + 9.563 * weight + 1.85 * height - 4.676 * age);
+    return Math.round(655.1 + 9.563 * weight + 1.85 * height - 4.676 * age);
   }
 
   return (
@@ -78,30 +93,42 @@ function NormaPage() {
               <div className="input-field col s12">
                 <label>Вес, кг</label>
                 <input
-                  type="text"
+                  type="number"
+                  className="validate"
+                  pattern="^[0-9]+$"
+                  min="0"
                   name="weight"
                   onChange={handleChange}
                 />
+                <span className="helper-text" data-error="Введите число">Введите число в кг</span>
               </div>
             </div>
             <div className="row">
               <div className="input-field col s12">
                 <label>Рост, см</label>
                 <input
-                  type="text"
+                  type="number"
+                  className="validate"
+                  pattern="^[0-9]+$"
+                  min="0"
                   name="height"
                   onChange={handleChange}
                 />
+                <span className="helper-text" data-error="Введите число">Введите число в см</span>
               </div>
             </div>
             <div className="row">
               <div className="input-field col s12">
                 <label>Возраст</label>
                 <input
-                  type="text"
+                  type="number"
+                  className="validate"
+                  pattern="^[0-9]+$"
+                  min="0"
                   name="age"
                   onChange={handleChange}
                 />
+                <span className="helper-text" data-error="Введите число">Введите сколько Вам лет</span>
               </div>
             </div>
             <button
@@ -114,10 +141,10 @@ function NormaPage() {
               Ваша норма {normCalories} калорий в день
             </div>
             <button
-              className="btn waves-effect waves-light"
+              className={styleBotton}
               onClick={handleNormaSave}
             >
-              Save and GO
+              Сохранить
             </button>
           </div>
         </div>

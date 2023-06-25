@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "materialize-css";
 
+
 function App() {
   const { token, userID, login, logout } = useAuth();
   const isAuth = Boolean(token); // если есть token - то true

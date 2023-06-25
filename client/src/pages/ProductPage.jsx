@@ -1,20 +1,31 @@
 // Страница для внесения продукта в базу данных
 
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import useRequest from "../hooks/request.hook";
+import useMessage from "../hooks/message.hook";
 
 function ProductPage() {
-  const { request } = useRequest();
+  const { request, error, clearError } = useRequest();
+  const message = useMessage();
+
+  // следить за ошибками и показать их при помощи M (Materialize)
+  useEffect(() => {
+    message(error);
+    clearError();
+  }, [error, message, clearError])
 
   // Форма для заполнения:
   const [productForm, setProductForm] = useState({
-    nameProduct: "", caloriesPer100g: 0
+    nameProduct: "", caloriesPer100g: ""
   });
   const { nameProduct, caloriesPer100g } = productForm;
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    setProductForm({ ...productForm, [name]: value })
+    const { name, value } = event.target;
+    setProductForm({ ...productForm, [name]: value });
+    if (name === "caloriesPer100g") {
+      setProductForm({ ...productForm, [name]: parseInt(value) });
+    }
   }
 
   // Отправить продукт в базу данных:
@@ -23,7 +34,7 @@ function ProductPage() {
       const { ...product } = productForm;
       const data = await request("/api/products/add", "POST", product);
       alert(data.message);
-      setProductForm({ nameProduct: "", caloriesPer100g: 0 })
+      setProductForm({ nameProduct: "", caloriesPer100g: "" })
     } catch (error) {
       console.error(error);
     }
@@ -56,7 +67,9 @@ function ProductPage() {
                 <div className="row">
                   <div className="input-field col s12">
                     <input
-                      type="text"
+                      type="number"
+                      pattern="^[0-9]+$"
+                      min="0"
                       placeholder="Количество калорий на 100 гр."
                       name="caloriesPer100g"
                       onChange={handleChange}
@@ -78,10 +91,6 @@ function ProductPage() {
         </div>
       </div>
     </div >
-    // <>
-    //   <h1></h1>
-    //  
-    // </>
   )
 }
 

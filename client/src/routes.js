@@ -2,7 +2,7 @@
 // https://www.npmjs.com/package/react-router-dom
 
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import DataPage from "./pages/DataPage";
 import NormaPage from "./pages/NormaPage";

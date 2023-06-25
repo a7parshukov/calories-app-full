@@ -2,7 +2,6 @@
 
 import React, { useContext, useState, useEffect } from "react";
 import useRequest from "../hooks/request.hook";
-import useMessage from "../hooks/message.hook";
 import AuthContext from "../context/AuthContext";
 import FoodJournal from "../components/FoodJournal";
 import FoodInput from "../components/FoodInput";
@@ -13,7 +12,6 @@ function DataPage() {
   const { request } = useRequest();
   const auth = useContext(AuthContext)
   const [updateFoodJournal, setUpdateFoodJournal] = useState(false);
-
   const [userNormaCalories, setUserNormaCalories] = useState(0);
 
   // получить норматив калорий из базы данных:
@@ -26,7 +24,7 @@ function DataPage() {
         setUserNormaCalories(data.norma)
       }
     } catch (err) {
-      console.error()
+      console.error(err)
     }
   }
 

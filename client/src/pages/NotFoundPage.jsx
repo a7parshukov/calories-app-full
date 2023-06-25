@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 function NotFoundPage () {
   return (
     <div>
-      <h1>Ooops...</h1>
-      <p>Такой страницы не существует. Обратно <Link to="/">в дневник</Link></p>
+      <h1 className="white-text">Ooops...</h1>
+      <p className="white-text">Такой страницы не существует. Обратно <Link to="/">в дневник</Link></p>
     </div>
   )
 }

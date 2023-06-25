@@ -95,7 +95,7 @@ router.post(
       const webToken = jwt.sign(
         { userID: isUser._id },
         config.get("privateKey"),
-        { expiresIn: "1h" }
+        { expiresIn: "7d" }
       )
 
       // успех

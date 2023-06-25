@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
 import useRequest from "../hooks/request.hook";
+import useMessage from "../hooks/message.hook.jsx";
 
 function FoodInput({ auth, onFoodAdded }) {
-  const { request } = useRequest();
+  const { request, error, clearError } = useRequest();
+  const message = useMessage();
+
+  // следить за ошибками и показать их при помощи M (Materialize)
+  useEffect(() => {
+    message(error);
+    clearError();
+  }, [error, message, clearError])
 
   const today = new Date().toISOString().substring(0, 10);
 
   // Основная форма для заполнения:
   const [formData, setFormData] = useState({
-    nameFood: "", weightFood: 0, dateFood: today
+    nameFood: "", weightFood: "", dateFood: today
   })
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    if (name === "weightFood") {
+      setFormData({ ...formData, [name]: parseInt(value) });
+    }
   }
 
   // Вытащить список продуктов из базы данных для отображения в поле input:
@@ -43,7 +54,7 @@ function FoodInput({ auth, onFoodAdded }) {
         food,
         { Authorization: `Bearer ${auth.token}` }
       );
-      setFormData({ nameFood: "", weightFood: 0, dateFood: today });
+      setFormData({ nameFood: "", weightFood: "", dateFood: today });
       onFoodAdded()
     } catch (error) {
       console.error(error);
@@ -70,21 +81,25 @@ function FoodInput({ auth, onFoodAdded }) {
               ))}
             </datalist>
             <input
-              type="text"
+              type="number"
+              pattern="^[0-9]+$"
+              min="0"
               placeholder="Количество, граммы"
               name="weightFood"
               onChange={handleChange}
               value={formData.weightFood}
             />
-            <label>
-              Дата:
-              <input
-                type="date"
-                name="dateFood"
-                onChange={handleChange}
-                value={formData.dateFood}
-              />
-            </label>
+            <div>
+              <label>
+                Дата:
+                <input
+                  type="date"
+                  name="dateFood"
+                  onChange={handleChange}
+                  value={formData.dateFood}
+                />
+              </label>
+            </div>
             <button
               type="button"
               onClick={addingFood}
