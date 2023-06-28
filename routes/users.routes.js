@@ -98,11 +98,16 @@ router.post(
   "/",
   body("nameFood").notEmpty().custom(async value => {
     const product = await Product.findOne({ nameProduct: value });
-    if (!product) {
-      throw new Error("Такого продукта нет в списке продуктов")
-    }
-  }).withMessage("Некорректный продукт"),
-  body("weightFood").notEmpty().isInt().withMessage("Некорректный вес продукта"),
+    if (!product) throw new Error("Такого продукта нет в списке продуктов")
+  })
+    .withMessage("Некорректный продукт"),
+  body("weightFood")
+    .notEmpty()
+    .isInt()
+    .custom(async value => {
+      if (value < 0) throw new Error("Число должно быть положительным")
+    })
+    .withMessage("Некорректный вес продукта"),
   body("dateFood").notEmpty().isDate().withMessage("Некорректная дата"),
   auth,
   async (req, res) => {

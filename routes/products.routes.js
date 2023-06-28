@@ -18,7 +18,12 @@ router.get("/name", async (req, res) => {
 // /api/products/add
 router.post("/add",
   body("nameProduct").notEmpty(),
-  body("caloriesPer100g").notEmpty().isInt(),
+  body("caloriesPer100g")
+    .notEmpty()
+    .isInt()
+    .custom(async value => {
+      if (value < 0) throw new Error("Число должно быть положительным")
+    }),
   async (req, res) => {
 
     const errors = validationResult(req);
@@ -34,11 +39,11 @@ router.post("/add",
       const { nameProduct, caloriesPer100g } = req.body;
       // Проверить наличие в БД:
       const findProduct = await Product.findOne({ nameProduct });
-      if(findProduct) {
-        return res.status(400).json({message: "Такой продукт уже есть в базе"})
+      if (findProduct) {
+        return res.status(400).json({ message: "Такой продукт уже есть в базе" })
       }
-      
-      await new Product({nameProduct, caloriesPer100g}).save();
+
+      await new Product({ nameProduct, caloriesPer100g }).save();
       res.status(201).json({ message: "Продукт занесён в базу" })
     } catch (error) {
       res.status(500).json({ message: "Не смог добавить новый продукт" })

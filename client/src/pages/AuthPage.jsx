@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext } from "react";
 import useRequest from "../hooks/request.hook.jsx";
 import useMessage from "../hooks/message.hook.jsx";
 import AuthContext from "../context/AuthContext.jsx";
-import "./AuthPage.css"
 
 function AuthPage() {
   const auth = useContext(AuthContext);
