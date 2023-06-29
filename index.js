@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
 
 // документация mongoose
 // https://mongoosejs.com/docs/guide.html 
@@ -26,6 +27,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productsRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.join(__dirname, 'client', 'build')))
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 async function main() {
   try {
