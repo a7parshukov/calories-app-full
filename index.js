@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import { fileURLToPath } from 'url';
 import path from "path";
 
 // документация mongoose
@@ -14,6 +15,10 @@ import config from "config";
 import authRoutes from "./routes/auth.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import productsRoutes from "./routes/products.routes.js";
+
+// для работы с path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = config.get("PORT") || 3000;
